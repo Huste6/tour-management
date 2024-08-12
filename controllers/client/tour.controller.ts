@@ -11,6 +11,7 @@ export const index = async(req:Request,res:Response)=>{
         raw:true
     });
     res.render("client/pages/tours/index",{
+        pageTitle: "Danh sách tours",
         tours:tours
     });
 }
