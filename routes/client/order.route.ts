@@ -3,6 +3,6 @@ import * as controller from "../../controllers/client/order.controller"
 
 const router:Router = Router();
 
-router.get("/",controller.index)
+router.post("/",controller.index)
 
 export const OrderRoutes:Router = router;
