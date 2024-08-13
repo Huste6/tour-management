@@ -104,3 +104,36 @@ const updateItemInCart = () => {
 // Lay data in ra giao dien
 drawListTour();
 // het lay data in ra giao dien
+
+//Đặt tour
+const formOrder = document.querySelector("[form-order]");
+if(formOrder){
+    formOrder.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const fullName = e.target.elements.fullName.value;
+        const phone = e.target.elements.phone.value;
+        const note = e.target.elements.note.value;
+        const cart = JSON.parse(localStorage.getItem("cart"))
+        const data = {
+            info: {
+                fullName: fullName,
+                phone:phone,
+                note:note
+            },
+            cart:cart
+        }
+
+        fetch("/order",{
+            method:"POST",
+            headers:{
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res=>res.json())
+            .then(data => {
+                console.log(data);
+            })
+    })
+}
+//Hết đặt tour
