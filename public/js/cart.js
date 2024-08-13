@@ -51,6 +51,8 @@ const drawListTour = () => {
             totalPriceSpan.innerHTML = total.toLocaleString();
             
             deleteItemInCart();
+
+            updateItemInCart();
         })
         .catch(error => {
             console.error("Error fetching data:", error);
@@ -75,6 +77,29 @@ const deleteItemInCart = () => {
     }
 }
 //Hết xóa sản phẩm trong giỏ hàng
+
+//Cập nhật số sản phẩm trong giỏ hàng
+const updateItemInCart = () => {
+    const ListInputUpdate = document.querySelectorAll("[list-tour] input[data-item-id]");
+    if(ListInputUpdate.length > 0){
+        ListInputUpdate.forEach(input => {
+            input.addEventListener("change", ()=>{
+                const TourId = input.getAttribute("data-item-id");
+                const quantity = input.value;
+
+                const cart = JSON.parse(localStorage.getItem("cart"));
+
+                const TourUpdate = cart.find(item=>item.TourId==TourId);
+                TourUpdate.quantity = parseInt(quantity);
+
+                localStorage.setItem("cart",JSON.stringify(cart));
+
+                drawListTour();
+            })
+        })
+    }
+}
+//Hết cập nhật số sản phẩm trong giỏ hàng
 
 // Lay data in ra giao dien
 drawListTour();
