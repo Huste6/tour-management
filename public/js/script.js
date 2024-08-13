@@ -34,6 +34,18 @@ const AlertAddCartSuccess = () => {
     }
 }
 
+// hien thi them so luong san pham vao mini cart
+const showMiniCart = () => {
+    const miniCart = document.querySelector("[mini-cart]");
+    if(miniCart){
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        const totalQuantity = cart.reduce((sum,item) => sum+item.quantity, 0);
+        miniCart.innerHTML = totalQuantity
+    }
+}
+
+showMiniCart();
+
 //cart
 // b1 : khoi tao
 const cart = localStorage.getItem("cart");
@@ -62,6 +74,8 @@ if(formAddToCart){
             localStorage.setItem("cart",JSON.stringify(cart));
 
             AlertAddCartSuccess();
+
+            showMiniCart();
         }
     })
 }
