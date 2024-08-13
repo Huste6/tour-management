@@ -18,6 +18,22 @@ var imagesMain = new Swiper(".imagesMain", {
 });
 // end slider tour detail
 
+//alert-add-cart-susscess
+const AlertAddCartSuccess = () => {
+    const elementAlert = document.querySelector("[alert-add-cart-susscess]");
+    if(elementAlert){
+        elementAlert.classList.remove("alert-hidden");
+        setTimeout(()=>{
+            elementAlert.classList.add("alert-hidden");
+        },3000)
+
+        const closeAlert = elementAlert.querySelector("[close-alert]");
+        closeAlert.addEventListener("click",()=>{
+            elementAlert.classList.add("alert-hidden");
+        })
+    }
+}
+
 //cart
 // b1 : khoi tao
 const cart = localStorage.getItem("cart");
@@ -44,6 +60,8 @@ if(formAddToCart){
                 cart[indexExistInCart].quantity = cart[indexExistInCart].quantity + quantity
             }
             localStorage.setItem("cart",JSON.stringify(cart));
+
+            AlertAddCartSuccess();
         }
     })
 }
