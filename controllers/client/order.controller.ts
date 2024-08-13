@@ -4,7 +4,7 @@ import { generateOrderCode } from "../../helper/generate";
 import Tour from "../../models/tour.model";
 import OrderItem from "../../models/order_item.model";
 
-//[POST] /categories
+//[POST] /order
 export const index = async(req:Request,res:Response)=> {
     const data = req.body;
 
@@ -55,5 +55,46 @@ export const index = async(req:Request,res:Response)=> {
         code:200,
         message: "Đặt hàng thành công!",
         OrderCode:code
+    })
+}
+
+//[GET] /order/success
+export const success = async(req:Request,res:Response)=> {
+    const orderCode = req.query.orderCode;
+
+    const order = await Order.findOne({
+        where:{
+            code:orderCode,
+            deleted:false
+        },
+        raw:true
+    })
+
+    const orderItem = await OrderItem.findAll({
+        where:{
+            orderId: order["id"]
+        },
+        raw:true
+    })
+
+    for (const item of orderItem) {
+        item["price_special"] = item["price"] * (1-item["discount"]/100);
+        item["total"] = item["price_special"] * item["quantity"];
+        const tourInfo = await Tour.findOne({
+            where:{
+                id: item["tourId"]
+            },
+            raw:true
+        })
+        item["title"] = tourInfo["title"];
+        item["slug"] = tourInfo["slug"];
+        item["image"] = JSON.parse(tourInfo["images"])[0];
+    }
+    const totalPrice = orderItem.reduce((sum,item)=>sum+item["price"],0)
+    res.render("client/pages/order/success",{
+        pageTitle: "Đặt hàng thành công!",
+        order:order,
+        ordersItem:orderItem,
+        totalPrice:totalPrice
     })
 }
