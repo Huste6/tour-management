@@ -3,6 +3,7 @@ import Tour from "../../models/tour.model";
 import Category from "../../models/category.model";
 import { generateOrderTour } from "../../helper/generate";
 import TourCategory from "../../models/tour-category.model";
+import { scheduler } from "timers/promises";
 
 //[GET] /admin/tours
 export const index = async(req:Request,res:Response)=> {
@@ -55,7 +56,9 @@ export const createPost = async(req:Request,res:Response)=>{
         stock: parseInt(req.body.stock),
         timeStart: req.body.timeStart,
         position: req.body.position,
-        status: req.body.status
+        status: req.body.status,
+        information: req.body.information,
+        schedule: req.body.schedule
     }
     const tour = await Tour.create(dataTour);
     const tourID = tour["id"];
