@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import adminRoutes from "./routes/admin/index.route";
 import { systemConfig } from "./config/system";
 import path from "path";
+import moment from "moment"
 
 sequelize;
 
@@ -22,6 +23,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+
+// App Local variable
+app.locals.moment = moment;
 
 // TinyMCE
 app.use(
